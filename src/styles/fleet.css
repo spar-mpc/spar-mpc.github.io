@@ -1,0 +1,30 @@
+.orbit-figure { --orbit-blue:#476c85; --orbit-red:#8c1515; color:#202020; }
+.globe-scene { position:relative; height:376px; }
+.globe-canvas-host, .globe-fallback { position:absolute; inset:0; width:100%; height:100%; }
+.globe-canvas-host canvas { display:block; width:100%; height:100%; cursor:grab; outline:none; }
+.globe-canvas-host canvas:active { cursor:grabbing; }
+.globe-canvas-host canvas:focus-visible { outline:1px solid #a9bbc7; outline-offset:2px; }
+.globe-fallback-link { stroke:#999; }
+.globe-fallback-link--diagnose { stroke:var(--orbit-blue); }
+.globe-fallback-link--recover { stroke:var(--orbit-red); }
+.globe-navigation-hint { position:absolute; top:13px; left:0; pointer-events:none; font-size:11px; color:#858585; }
+.globe-satellite-label { position:absolute; color:#656565; font-size:10px; line-height:1; pointer-events:none; transform:translate(-50%, -23px); text-shadow:0 0 3px white,0 0 3px white; }
+.globe-contact-label { position:absolute; bottom:12px; left:0; right:0; color:#666; font-size:11px; text-align:center; pointer-events:none; }
+.globe-contact-label--diagnose { color:var(--orbit-blue); }
+.globe-contact-label--recover { color:var(--orbit-red); }
+.orbit-legend { display:flex; align-items:center; justify-content:center; gap:17px; margin-top:8px; color:#656565; font-size:10px; }
+.orbit-legend > span { display:flex; align-items:center; gap:5px; }
+.orbit-legend i { width:7px; height:2px; background:#999; }
+.orbit-legend .orbit-key-diagnose { background:var(--orbit-blue); }
+.orbit-legend .orbit-key-recover { background:var(--orbit-red); }
+.globe-accessible-state { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width:650px) {
+  .globe-scene { height:274px; }
+  .globe-navigation-hint { font-size:10px; top:5px; }
+  .globe-satellite-label { font-size:9px; transform:translate(-50%, -18px); }
+  .globe-contact-label { bottom:8px; font-size:10px; }
+  .orbit-legend { font-size:9px; gap:18px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .orbit-figure *, .orbit-figure *:before, .orbit-figure *:after { animation:none!important; transition:none!important; }
+}

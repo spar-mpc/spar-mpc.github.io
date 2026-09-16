@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+tmp/
+
+# Local reference manuscript; never copied into the published site.
+/SPAR_MPC*.pdf
+/reference/
+
