@@ -170,15 +170,17 @@ test('BibTeX is visible by default, can be copied, and is reached from the resou
   await expect(citation.locator('pre')).toBeVisible();
 });
 
-test('resource tags show arXiv, Code, and BibTeX with inactive unconfigured links', async ({ page }) => {
+test('resource tags link to the solver and BibTeX while arXiv remains unconfigured', async ({ page }) => {
   await page.goto('/');
   const resources = page.getByRole('navigation', { name: 'Research resources' });
   await expect(resources.getByRole('link')).toHaveText(['arXiv', 'Code', 'BibTeX']);
-  for (const name of ['arXiv', 'Code']) {
-    const tag = resources.getByRole('link', { name, exact: true });
-    await expect(tag).toHaveAttribute('aria-disabled', 'true');
-    await expect(tag).not.toHaveAttribute('href');
-  }
+  const arxiv = resources.getByRole('link', { name: 'arXiv', exact: true });
+  await expect(arxiv).toHaveAttribute('aria-disabled', 'true');
+  await expect(arxiv).not.toHaveAttribute('href');
+  const code = resources.getByRole('link', { name: 'Code', exact: true });
+  await expect(code).toHaveAttribute('href', 'https://github.com/spar-mpc/spar-mpc.github.io/tree/main/solver');
+  await expect(code).not.toHaveAttribute('aria-disabled');
+  await expect(code).toHaveAttribute('target', '_blank');
   await resources.getByRole('link', { name: 'BibTeX', exact: true }).click();
   await expect(page).toHaveURL(/#citation$/);
   await expect(page.locator('#citation').getByRole('heading', { level: 2, name: 'BibTeX', exact: true })).toBeInViewport();

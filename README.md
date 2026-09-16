@@ -71,7 +71,8 @@ are in `src/styles/`; reusable page components are in `src/components/`.
 
 ## Publication resources
 
-Set arXiv and research-code URLs in `src/data/site.ts`.
+The Code tag links directly to the Python solver directory on GitHub. Resource
+URLs, including the unconfigured arXiv link, are in `src/data/site.ts`.
 The header shows arXiv, Code, and BibTeX tags; unconfigured resource tags are
 inactive. The citation is visible with a copy button. The **Website source** link
 points to this repository.

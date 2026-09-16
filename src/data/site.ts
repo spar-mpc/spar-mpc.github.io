@@ -3,7 +3,7 @@
  */
 export const resources: { paper: string | null; code: string | null; arxiv: string | null; supplement: string | null; website: string } = {
   paper: null,
-  code: null,
+  code: 'https://github.com/spar-mpc/spar-mpc.github.io/tree/main/solver',
   arxiv: null,
   supplement: null,
   website: 'https://github.com/spar-mpc/spar-mpc.github.io',
