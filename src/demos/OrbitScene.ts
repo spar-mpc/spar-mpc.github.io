@@ -17,7 +17,8 @@ export type SceneSnapshot = {
   texture: 'loading' | 'ready' | 'error';
 };
 
-const colors = { routine: 0x969696, diagnose: 0x476c85, recover: 0x8c1515 };
+const colors = { routine: 0x00875a, diagnose: 0x7c3aed, recover: 0x8c1515 };
+const linkAxis = new THREE.Vector3(0, 1, 0);
 const cameraDistance = 6;
 const initialCamera = new THREE.Vector3(.218, .5, .838).normalize().multiplyScalar(cameraDistance);
 const vector = (value: { x: number; y: number; z: number }) => new THREE.Vector3(value.x, value.y, value.z);
@@ -30,7 +31,10 @@ export class OrbitScene {
   private controls: OrbitControls;
   private earth: THREE.Mesh;
   private satellites = new Map<string, THREE.Group>();
-  private links = new Map<string, { line: THREE.Line; dots: THREE.Mesh[] }>();
+  private links = new Map<string, {
+    line: THREE.Mesh<THREE.CylinderGeometry, THREE.MeshBasicMaterial>;
+    dots: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>[];
+  }>();
   private resizeObserver: ResizeObserver;
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
@@ -281,25 +285,25 @@ export class OrbitScene {
       active.add(key);
       let link = this.links.get(key);
       if (!link) {
-        const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]), new THREE.LineBasicMaterial({ color: colors[contact.type], transparent: true, opacity: .8, depthWrite: false }));
-        const dots = [0, 1].map(() => new THREE.Mesh(new THREE.SphereGeometry(.011, 8, 6), new THREE.MeshBasicMaterial({ color: colors[contact.type] })));
+        // Mesh connections retain their thickness across WebGL implementations.
+        const line = new THREE.Mesh(new THREE.CylinderGeometry(.011, .011, 1, 8), new THREE.MeshBasicMaterial({ color: colors[contact.type], toneMapped: false }));
+        const dots = [0, 1].map(() => new THREE.Mesh(new THREE.SphereGeometry(.020, 8, 6), new THREE.MeshBasicMaterial({ color: colors[contact.type], toneMapped: false })));
         link = { line, dots };
         this.links.set(key, link);
         this.scene.add(line, ...dots);
       }
       link.line.visible = true;
-      (link.line.material as THREE.LineBasicMaterial).color.setHex(colors[contact.type]);
+      link.line.material.color.setHex(colors[contact.type]);
       const start = vector(station).multiplyScalar(1.016);
       const end = vector(satellite);
-      const vertices = link.line.geometry.getAttribute('position') as THREE.BufferAttribute;
-      vertices.setXYZ(0, start.x, start.y, start.z);
-      vertices.setXYZ(1, end.x, end.y, end.z);
-      vertices.needsUpdate = true;
-      link.line.geometry.computeBoundingSphere();
+      const direction = end.clone().sub(start);
+      link.line.position.copy(start).addScaledVector(direction, .5);
+      link.line.scale.y = direction.length();
+      link.line.quaternion.setFromUnitVectors(linkAxis, direction.normalize());
       for (let index = 0; index < link.dots.length; index++) {
         const dot = link.dots[index];
         dot.visible = true;
-        (dot.material as THREE.MeshBasicMaterial).color.setHex(colors[contact.type]);
+        dot.material.color.setHex(colors[contact.type]);
         dot.position.lerpVectors(start, end, (this.time * .75 + index * .5) % 1);
       }
     }

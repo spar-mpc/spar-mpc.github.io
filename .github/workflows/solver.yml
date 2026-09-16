@@ -1,0 +1,31 @@
+name: Test solver
+
+on:
+  push:
+    paths: ['solver/**', '.github/workflows/solver.yml']
+  pull_request:
+    paths: ['solver/**', '.github/workflows/solver.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: solver/pyproject.toml
+      - run: python -m pip install './solver[dev]'
+      - run: python -m ruff check solver
+      - run: python -m ruff format --check solver
+      - run: python -m pytest solver/tests
+      - run: python solver/examples/fleet.py --outcome drive
+      - run: python solver/examples/fleet.py --outcome sensor

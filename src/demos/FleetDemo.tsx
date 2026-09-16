@@ -29,7 +29,7 @@ function FallbackGlobe({ time }: { time: number }) {
     {frame.contacts.map((contact) => {
       const satellite = project(frame.satellites.find((item) => item.id === contact.satelliteId)!);
       const station = project(frame.stations.find((item) => item.id === contact.stationId)!);
-      return station.visible && satellite.visible ? <line key={contact.stationId} x1={station.x} y1={station.y} x2={satellite.x} y2={satellite.y} className={`globe-fallback-link globe-fallback-link--${contact.type}`} strokeWidth=".01" /> : null;
+      return station.visible && satellite.visible ? <line key={contact.stationId} x1={station.x} y1={station.y} x2={satellite.x} y2={satellite.y} className={`globe-fallback-link globe-fallback-link--${contact.type}`} strokeWidth="2.4" vectorEffect="non-scaling-stroke" strokeLinecap="round" /> : null;
     })}
     {frame.satellites.map((satellite) => {
       const point = project(satellite);

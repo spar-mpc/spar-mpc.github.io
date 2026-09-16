@@ -13,3 +13,11 @@ tmp/
 /SPAR_MPC*.pdf
 /reference/
 
+# Python solver development.
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+/solver/build/

@@ -4,6 +4,9 @@ Static React, TypeScript, and Vite page for **Fault-Aware Fleet Recovery Schedul
 with Service-Preserving Active Diagnosis**, by Carlo Schreiber, Duncan Eddy, and
 Mykel J. Kochenderfer, Stanford University. No backend, API, or solver is required.
 
+The independent Python/Gurobi implementation is in [solver/](solver/README.md).
+It provides generic SPAR-MPC scheduling and a small robot-fleet example.
+
 ## Development
 
 Use Node.js **22.12+** (or **20.19+**) and npm.
@@ -32,8 +35,9 @@ renders it with Three.js, and `src/demos/FleetDemo.tsx` manages visibility and a
 Eight satellites orbit a photographic NASA Earth, with station dots
 at KSAT's Svalbard, Tromsø, and Troll sites. Contact eligibility follows geometric
 elevation above each station's horizon. The illustration assigns at most one
-satellite per station and one station per satellite. Gray links represent routine
-service, blue links diagnosis, and red links recovery commands.
+satellite per station and one station per satellite. Green links represent routine
+service, purple links diagnosis, and red links recovery commands. Contact links
+use opaque mesh cylinders for consistent visibility, with matching legend colors.
 
 The animation runs automatically while visible and suspends offscreen or in a
 hidden tab. Reduced motion keeps the satellites and contact signals still.
